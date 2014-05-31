@@ -39,6 +39,7 @@ package com.findingpolandball.dao
 				this.level = level;
 				if (this.level > countryBalls.length) {
 					this.level = level % countryBalls.length;
+					trace("postModLevel:" + this.level);
 				}
 		}
 		
@@ -47,6 +48,8 @@ package com.findingpolandball.dao
 		}
 		
 		public function getLevel():Array {
+			trace("level:" + level );
+			trace("countryBalls[level-1]:" + countryBalls[level - 1));
 			return countryBalls[level-1];
 		}
 	}
