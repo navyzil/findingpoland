@@ -17,14 +17,19 @@ package com.findingpolandball.view.environment.levels
 		private var env:Level;
 		private var gameTimer:GameTimer;
 		private var isPolandHere:Boolean = false; 
-		private var loadLevel:int;
+		private var gamePoints:int;
+		private var targetCountryBall:int;
 		
-		public function Level1(env:Level, gameTimer:GameTimer, loadLevel:int) 
+		public function Level1(env:Level, gameTimer:GameTimer, gamePoints:int) 
 		{
 			trace("Level1 called");
 			this.env = env;
 			this.gameTimer = gameTimer; 
-			this.loadLevel = loadLevel;
+			this.gamePoints = gamePoints;
+		}
+		
+		public function setTargetCountryBall(targetCountryBall:int):void {
+			this.targetCountryBall = targetCountryBall;
 		}
 		
 		public function generateMap():void 
@@ -33,11 +38,10 @@ package com.findingpolandball.view.environment.levels
 			
 			var cbd:CountryBallDao = new CountryBallDao();
 			var cbv:CountryBallView;
-			cbd.setLevel(loadLevel);
+			cbd.setLevel(1);
 
 			var levelDao:LevelDao = new LevelDao();
-			levelDao.setChallengeCount(cbd.getCountryBallsLength());
-			levelDao.setLevel(loadLevel);
+			levelDao.setLevel(gamePoints);
 			
 			var worldLevel:int = levelDao.getWorldLevel();
 			var tileSet:Array = levelDao.getLevel();
@@ -52,34 +56,21 @@ package com.findingpolandball.view.environment.levels
 					dirt.y = dirt.height * row;	
 					
 					this.addChild(dirt);
-
-					generateCountryBalls(cbd, cbv, dirt, gameTimer, loadLevel);
+					generateCountryBalls(cbd, cbv, dirt, gameTimer, gamePoints);
 				}
 			}
 		}
 		
-		private function generateCountryBalls(cbd:CountryBallDao, cbv:CountryBallView, dirt:Dirt, gameTimer:GameTimer, loadLevel:int):void
+		private function generateCountryBalls(cbd:CountryBallDao, cbv:CountryBallView, dirt:Dirt, gameTimer:GameTimer, gamePoints:int):void
 		{
 			cbv = new CountryBallView();	
-			cbv.setLevelCount(loadLevel);
+			cbv.setLevelCount(gamePoints);
 			
 			var countryBalls:Array = cbd.getLevel();
 			var i:int = (Math.random() * countryBalls.length);
-			var countryBall:CountryBall;
 			
-			if (countryBalls[i] == 1) {
-				if(isPolandHere == false){					
-					countryBall	= cbv.loadCountryBalls(this, dirt.x, dirt.y, 1, env, gameTimer);
-					isPolandHere = true;
-				}
-				
-				else if( isPolandHere == true){
-					countryBall	= cbv.loadCountryBalls(this, dirt.x, dirt.y, 20, env, gameTimer);
-				}
-			}
-			if (countryBalls[i] != 1) {
-				countryBall	= cbv.loadCountryBalls(this, dirt.x, dirt.y, countryBalls[i], env, gameTimer);
-			}
+			cbv.setTargetCountryBall(targetCountryBall);
+			cbv.loadCountryBalls(this, dirt.x, dirt.y, countryBalls[i], env, gameTimer);
 		}
 	}
 }

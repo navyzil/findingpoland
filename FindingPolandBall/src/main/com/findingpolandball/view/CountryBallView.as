@@ -14,10 +14,10 @@ package com.findingpolandball.view
 	{
 		private var levelMovieClip:MovieClip;
 		private var levelCount:int;
+		private var targetCountryBall:int;
 		
 		public function CountryBallView() 
 		{
-			
 		}
 		
 		public function setLevelMovieClip(levelMovieClip:MovieClip):void {
@@ -32,24 +32,30 @@ package com.findingpolandball.view
 			this.levelCount = levelCount;
 		}
 		
+		public function setTargetCountryBall(targetCountryBall:int) {
+			trace("setting target country");
+			//targetCountryBall = 1 + Math.round(Math.random()*(maxCountryBallCount-1));
+			//targetCountryBall = 1 + Math.round(Math.random()*(20-1));
+			
+			this.targetCountryBall = targetCountryBall;
+		}
+		
 		public function loadCountryBalls(levelMovieClip:MovieClip, row:int, col:int, frame:int, env:Level, gameTimer:GameTimer):CountryBall {
 			var countryBall:CountryBall = new CountryBall(env);
 			
 			countryBall.setGameTimer(gameTimer);
 			countryBall.setCurrentLevel(levelMovieClip);
-			countryBall.setLevelCount(levelCount);
+			countryBall.setGamePoints(levelCount);
 			
 			countryBall.x = row + countryBall.width
 			countryBall.y = col  + countryBall.height;
 			
 			countryBall.setCountryCode(frame);
 			countryBall.generateCountry(frame);
-			if(frame == 1){
-				levelMovieClip.addChild(countryBall);
-			}
-			else {
-				levelMovieClip.addChild(countryBall);
-			}
+			
+			countryBall.setTargetCountryBall(targetCountryBall);
+			
+			levelMovieClip.addChild(countryBall);
 			return countryBall;
 		}				
 	}

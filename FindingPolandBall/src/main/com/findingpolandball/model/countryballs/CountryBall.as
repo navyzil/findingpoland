@@ -20,7 +20,8 @@ package com.findingpolandball.model.countryballs
 		private var env:Level;
 		private var currentLevel:MovieClip;
 		private var gameTimer:GameTimer;
-		private var levelCtr:int;
+		private var gamePoints:int;
+		private var targetCountryBall:int;
 		
 		public function CountryBall(env:Level) 
 		{
@@ -40,7 +41,7 @@ package com.findingpolandball.model.countryballs
 		public function setCountryCode(countryCode:int):void {
 			this.countryCode = countryCode;
 		}
-		
+				
 		public function getCountryCode():int {
 			return countryCode;
 		}
@@ -53,20 +54,33 @@ package com.findingpolandball.model.countryballs
 			this.gameTimer = gameTimer;
 		}
 		
-		public function setLevelCount(levelCtr:int):void {
-			this.levelCtr = levelCtr;
+		public function setGamePoints(gamePoints:int):void {
+			this.gamePoints = gamePoints;
+		}
+		
+		public function setTargetCountryBall(targetCountryBall:int):void {
+			this.targetCountryBall = targetCountryBall;
+			trace("this.targetCountryBall:" + this.targetCountryBall);
 		}
 		
 		private function ballClick(e:Event):void {
-			if (countryCode == 1) {
-				trace("pre levelCtr:" + levelCtr);
+			trace("targetCountryBall: " + targetCountryBall);
+			if (countryCode == targetCountryBall) {
+				trace("pre gamepoints:" + gamePoints);
 				this.visible = false;
 				env.cleanUpLevel(currentLevel);
-				gameTimer.setTime(5);
-				levelCtr++;
-				trace("post levelCtr:" + levelCtr);
-				env.generateLevel(levelCtr, gameTimer);
+				gameTimer.setTime(3);
+				gamePoints+=2;
+				trace("post gamepoints:" + gamePoints);
+				env.generateLevel(gamePoints, gameTimer, newTarget());
 			}
+			else {
+				gameTimer.setTime(-3);
+			}
+		}
+		
+		public function newTarget():int {
+			return targetCountryBall = 1 + Math.round(Math.random() * (26 - 1)); //replace 20 with 190
 		}
 	}
 }

@@ -15,31 +15,37 @@ package com.findingpolandball.view.environment
 	 */
 	public class Level extends MovieClip 
 	{
-		private var loadLevel:int;
+		private var gamePoints:int;
+		private var targetCountryBall:int;
+		
 		private static const GAME_TIME = 60;
+		private static const MAX_COUNTRY_BALLS = 190;
 		
 		public function Level() 
 		{
-			loadLevel = 1;
+			gamePoints = 0;
+			targetCountryBall = 1 + Math.round(Math.random() * (26 - 1)); //replace 20 with 190
 			
 			var gameUi:GameUI = this.getChildByName("gameUI") as GameUI;
 			var gameTimer:GameTimer = gameUi.gameTimer(GAME_TIME);
 		
 			trace("parent.name:" + parent.name);
-			generateLevel(loadLevel, gameTimer);
+			generateLevel(gamePoints, gameTimer, targetCountryBall);
 			
 			gameUi.gamePause();
 		}
 		
-		public function generateLevel(loadLevel:int, gameTimer:GameTimer) {
+		public function generateLevel(gamePoints:int, gameTimer:GameTimer, targetCountryBall:int) {
 			trace("generateLevel");
 
-			var levelMovieClip:Level1 = new Level1(this, gameTimer, loadLevel);
+			var levelMovieClip:Level1 = new Level1(this, gameTimer, gamePoints);
 			trace("levelMovieClip.name:" + levelMovieClip.name);
+			levelMovieClip.setTargetCountryBall(targetCountryBall);
 			levelMovieClip.generateMap();
 			
 			var gameUi:GameUI = this.getChildByName("gameUI") as GameUI;
-			gameUi.gameLevelTxt.text = String(loadLevel);
+			gameUi.gameLevelTxt.text = String(gamePoints);
+			gameUi.gameFindImage.gotoAndStop(targetCountryBall, null);
 			
 			this.addChild(levelMovieClip);
 									
