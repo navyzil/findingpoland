@@ -24,7 +24,7 @@ package com.findingpolandball.view.environment
 		public function Level() 
 		{
 			gamePoints = 0;
-			targetCountryBall = 1 + Math.round(Math.random() * (26 - 1)); //replace 20 with 190
+			targetCountryBall = 1 + Math.round(Math.random() * (31 - 1)); //replace 20 with 190
 			
 			var gameUi:GameUI = this.getChildByName("gameUI") as GameUI;
 			var gameTimer:GameTimer = gameUi.gameTimer(GAME_TIME);

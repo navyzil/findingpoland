@@ -80,7 +80,7 @@ package com.findingpolandball.model.countryballs
 		}
 		
 		public function newTarget():int {
-			return targetCountryBall = 1 + Math.round(Math.random() * (26 - 1)); //replace 20 with 190
+			return targetCountryBall = 1 + Math.round(Math.random() * (31 - 1)); //replace 20 with 190
 		}
 	}
 }
