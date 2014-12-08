@@ -54,7 +54,8 @@ package com.findingpolandball.view
 			countryBall.generateCountry(frame);
 			
 			countryBall.setTargetCountryBall(targetCountryBall);
-			
+			trace("countryBall setted:" + countryBall.getCountryCode());
+			gameTimer.setTargetCountryBall(countryBall);
 			levelMovieClip.addChild(countryBall);
 			return countryBall;
 		}				

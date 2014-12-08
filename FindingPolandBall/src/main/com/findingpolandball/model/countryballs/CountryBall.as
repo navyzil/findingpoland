@@ -8,6 +8,7 @@ package com.findingpolandball.model.countryballs
 	import com.findingpolandball.view.userinterface.GameUI;
 	import com.findingpolandball.view.userinterface.GameTimer;
 
+	import com.findingpolandball.thirdpartyapis.RandomPlus;
 	/**
 	 * ...
 	 * @author Denzil Daulo
@@ -33,7 +34,8 @@ package com.findingpolandball.model.countryballs
 		}
 		
 		public function generateCountry(frame:int):void {
-			var countryBall:MovieClip = this.getChildByName("CountryBallFlag") as MovieClip;
+			var countryBallAnimation:MovieClip = this.getChildByName("CountryBallAnimation") as MovieClip;
+			var countryBall:MovieClip = countryBallAnimation.getChildByName("CountryBallFlag") as MovieClip;
 			countryBall.gotoAndStop(frame, null);
 			return;
 		}
@@ -63,6 +65,10 @@ package com.findingpolandball.model.countryballs
 			trace("this.targetCountryBall:" + this.targetCountryBall);
 		}
 		
+		public function getTargetCountryBall():int {
+			return this.targetCountryBall;
+		}
+		
 		private function ballClick(e:Event):void {
 			trace("targetCountryBall: " + targetCountryBall);
 			if (countryCode == targetCountryBall) {
@@ -80,7 +86,21 @@ package com.findingpolandball.model.countryballs
 		}
 		
 		public function newTarget():int {
-			return targetCountryBall = 1 + Math.round(Math.random() * (31 - 1)); //replace 20 with 190
+			var randomTarget:RandomPlus = new RandomPlus(190, 1);
+			return targetCountryBall = randomTarget.getNum();
+		}
+		
+		public function triggerAnimation(targetCountryBall:int):void {
+			trace("animation running");
+			var countryBallAnimation:MovieClip = this.getChildByName("CountryBallAnimation") as MovieClip;
+			var countryBall:MovieClip = countryBallAnimation.getChildByName("CountryBallFlag") as MovieClip;
+			countryBall.gotoAndStop(targetCountryBall, null);
+			countryBallAnimation.gotoAndPlay(1, null);
+			
+			//TODO: Game Over Screen after last frame
+			//if(countryBallAnimation.currentFrame == countryBallAnimation.totalFrames){
+				//countryBallAnimation.totalFrames;
+			//}
 		}
 	}
 }
