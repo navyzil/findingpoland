@@ -47,6 +47,9 @@ package com.findingpolandball.view.environment.levels
 			var tileSet:Array = levelDao.getLevel();
 			var levelString:String = worldLevel + "_";
 			
+			var countryBalls:Array = cbd.getLevel();
+			
+			var countryCode:int = 0;
 			for (var row:int = 0; row < tileSet.length; row++) {
 				for (var col:int = 0; col < tileSet[row].length; col++) {
 					var tile:int =  tileSet[row][col];
@@ -56,21 +59,19 @@ package com.findingpolandball.view.environment.levels
 					dirt.y = dirt.height * row;	
 					
 					this.addChild(dirt);
-					generateCountryBalls(cbd, cbv, dirt, gameTimer, gamePoints);
+					generateCountryBalls(cbv, dirt, gameTimer, gamePoints, countryBalls[countryCode]);
+					countryCode++;
 				}
 			}
 		}
 		
-		private function generateCountryBalls(cbd:CountryBallDao, cbv:CountryBallView, dirt:Dirt, gameTimer:GameTimer, gamePoints:int):void
+		private function generateCountryBalls(cbv:CountryBallView, dirt:Dirt, gameTimer:GameTimer, gamePoints:int, countryBallCode:int):void
 		{
 			cbv = new CountryBallView();	
 			cbv.setLevelCount(gamePoints);
 			
-			var countryBalls:Array = cbd.getLevel();
-			var i:int = (Math.random() * countryBalls.length);
-			
 			cbv.setTargetCountryBall(targetCountryBall);
-			cbv.loadCountryBalls(this, dirt.x, dirt.y, countryBalls[i], env, gameTimer);
+			cbv.loadCountryBalls(this, dirt.x, dirt.y, countryBallCode, env, gameTimer);
 		}
 	}
 }
